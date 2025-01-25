@@ -1,0 +1,30 @@
+replicaCount: 1
+
+image:
+  repository: registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject/hello-world-ui-flask
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+route:
+  enabled: true
+  className: nginx
+  annotations: {}
+  hosts:
+    - host: hello-world-ui-flask.example.com
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+
+resources: {}
+nodeSelector: {}
+tolerations: []
+affinity: []
+
+env:
+  REGISTRY_URL: "registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject"
+  CLUSTER_NAME: "demo-cluster"

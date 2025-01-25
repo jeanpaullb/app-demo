@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-world-ui
+  namespace: demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-world-ui
+  template:
+    metadata:
+      labels:
+        app: hello-world-ui
+    spec:
+      containers:
+      - name: hello-world-ui
+        image: registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject/hello-world-ui:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: REGISTRY_URL
+          value: "registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject"
+        - name: CLUSTER_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: CONTAINER_NAME
+          value: "hello-world-ui"
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace

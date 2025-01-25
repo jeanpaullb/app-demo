@@ -1,0 +1,28 @@
+{{- if .Values.route.enabled }}
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    {{- with .Values.route.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  host: {{ .Values.route.hosts | first | .host }}
+  to:
+    kind: Service
+    name: {{ .Release.Name }}
+    weight: 100
+  port:
+    targetPort: {{ .Values.service.port }}
+  tls:
+    {{- if .Values.route.tls }}
+    termination: edge
+    insecureEdgeTerminationPolicy: Redirect
+    {{- with (index .Values.route.tls 0) }}
+    certificate: {{ .cert }}
+    key: {{ .key }}
+    caCertificate: {{ .caCert }}
+    {{- end }}
+    {{- end }}
+{{- end }}

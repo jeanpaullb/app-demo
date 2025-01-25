@@ -1,0 +1,27 @@
+# Use Python 3.11 as the base image
+FROM python:3.11-slim
+
+# Set the working directory inside the container
+WORKDIR /app
+
+# Copy application files
+COPY app.py /app/app.py
+COPY templates/ /app/templates/
+COPY requirements.txt /app/requirements.txt
+
+# Install system dependencies for Kubernetes client and Python packages
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    libffi-dev \
+    libssl-dev \
+    curl \
+    && pip install --no-cache-dir -r requirements.txt \
+    && apt-get remove -y gcc libffi-dev libssl-dev \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+
+# Expose port 8080 for the Flask app
+EXPOSE 8080
+
+# Run the Flask application
+CMD ["python", "app.py"]
