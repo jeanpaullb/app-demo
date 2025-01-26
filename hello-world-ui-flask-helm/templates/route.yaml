@@ -8,7 +8,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  host: {{ .Values.route.hosts | first | .host }}
+  host: {{ (index .Values.route.hosts 0).host }}
   to:
     kind: Service
     name: {{ .Release.Name }}

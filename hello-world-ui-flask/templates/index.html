@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Environment Information</title>
+    <title>Cluster Information</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -11,19 +11,26 @@
             padding: 20px;
             background-color: #f4f4f4;
         }
-        h1 {
+        h1, h2 {
             text-align: center;
             color: #333;
         }
         table {
-            width: 100%;
+            width: 80%; /* Ancho general de todas las tablas */
+            margin: 0 auto 20px auto;
             border-collapse: collapse;
-            margin-top: 20px;
         }
         th, td {
             padding: 10px;
             text-align: left;
             border: 1px solid #ddd;
+        }
+        /* Ajusta el ancho de la primera columna solo para General Information y Counts */
+        .general-info th:first-child,
+        .general-info td:first-child,
+        .counts th:first-child,
+        .counts td:first-child {
+            width: 30%; /* Ancho reducido para la primera columna */
         }
         th {
             background-color: #007bff;
@@ -33,20 +40,53 @@
             background-color: #f9f9f9;
         }
     </style>
+    
 </head>
 <body>
-    <h1>Environment Information</h1>
+    <h1>Cluster Information</h1>
+
+    <h2>General Information</h2>
+    <table class="general-info">
+        <tr><th>API Version</th><td>{{ data.cluster.api_version }}</td></tr>
+        <tr><th>Platform</th><td>{{ data.cluster.platform }}</td></tr>
+        <tr><th>OpenShift Version</th><td>{{ data.openshift_version }}</td></tr>
+        <tr><th>Pod Name</th><td>{{ data.pod_name }}</td></tr>
+        <tr><th>Namespace</th><td>{{ data.namespace }}</td></tr>
+    </table>
+    
+    <h2>Counts</h2>
+    <table class="counts">
+        <tr><th>Nodes</th><td>{{ data.node_count }}</td></tr>
+        <tr><th>Pods</th><td>{{ data.pod_count }}</td></tr>
+        <tr><th>Namespaces</th><td>{{ data.namespace_count }}</td></tr>
+        <tr><th>Deployments</th><td>{{ data.deployment_count }}</td></tr>
+        <tr><th>Services</th><td>{{ data.service_count }}</td></tr>
+    </table>
+
+    <h2>Node Details</h2>
     <table>
-        <tr>
-            <th>Key</th>
-            <th>Value</th>
-        </tr>
-        {% for key, value in data.items() %}
-        <tr>
-            <td>{{ key }}</td>
-            <td>{{ value }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>Node Name</th>
+                <th>OS Image</th>
+                <th>CPU Capacity</th>
+                <th>Memory Capacity</th>
+                <th>Kubelet Version</th>
+                <th>Roles</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for node in data.nodes %}
+            <tr>
+                <td>{{ node.name }}</td>
+                <td>{{ node.os_image }}</td>
+                <td>{{ node.cpu_capacity }}</td>
+                <td>{{ node.memory_capacity }}</td>
+                <td>{{ node.kubelet_version }}</td>
+                <td>{{ node.roles }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
     </table>
 </body>
 </html>

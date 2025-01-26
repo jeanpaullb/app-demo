@@ -1,9 +1,9 @@
 #local
 podman build -t localhost/hello-world-ui:1.0 .
 #labjp
-podman build -t quay.apps.acm.labjp.xyz/homelab/hello-world-ui-flask:1.0 .
+podman build -t quay.apps.acm.labjp.xyz/homelab/hello-world-ui-flask:1. .
 #clarocl
-podman build -t registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject/hello-world-ui:latest .
+podman build -t registry-quay-quay-operator.apps.acm-dcl.clarocl.com/acm/hello-world-ui-flask:1.7 .
 
 #labjp
 podman login quay.apps.acm.labjp.xyz --tls-verify=false
@@ -13,7 +13,7 @@ podman login registry-quay-quay-operator.apps.acm-dcl.clarocl.com
 #labjp
 podman push quay.apps.acm.labjp.xyz/homelab/hello-world-ui-flask:1.0 --tls-verify=false
 #clarocl
-podman push registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject/hello-world-ui:latest 
+podman push registry-quay-quay-operator.apps.acm-dcl.clarocl.com/acm/hello-world-ui-flask:1.7 --tls-verify=false
 
 
 

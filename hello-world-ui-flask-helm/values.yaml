@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: registry-quay-quay-operator.apps.acm-dcl.clarocl.com/myproject/hello-world-ui-flask
-  tag: latest
+  repository: "registry-quay-quay-operator.apps.acm-dcl.clarocl.com/acm/hello-world-ui-flask"
+  tag: "1.7"
   pullPolicy: IfNotPresent
 
 service:
@@ -14,11 +14,17 @@ route:
   className: nginx
   annotations: {}
   hosts:
-    - host: hello-world-ui-flask.example.com
+    - host: hello-world-ui-flask.apps.acm-dcl.clarocl.com
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls: []
+
+serviceAccount:
+  name: default # Cambia esto si usas un ServiceAccount personalizado
+
+role:
+  name: cluster-admin # Cambia esto al nombre del Role que desees asociar
 
 resources: {}
 nodeSelector: {}
